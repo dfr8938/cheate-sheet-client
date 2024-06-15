@@ -57,70 +57,76 @@ const InputQuestion = () => {
   };
 
   return (
-    <div className="container">
-      <div className="input-search-box">
-        <input
-          className="input-search"
-          ref={inputEl}
-          value={searchTerm}
-          onChange={getSearchTerm}
-          type="text"
-          placeholder="введите вопрос..."
-        />
-      </div>
-      <div className="output-questions">
-        <ListQuestions
-          questions={searchTerm.length < 1 ? questions : searchResult}
-        />
-      </div>
-      <div className="input-question-box">
-        {!closeForm ? (
-          <i
-            className="fa-solid fa-plus open-form"
-            onClick={() => setCloseForm(!closeForm)}
-          ></i>
-        ) : (
-          <i
-            className="fa-solid fa-xmark open-form"
-            onClick={() => setCloseForm(!closeForm)}
-          ></i>
-        )}
-        {closeForm && (
-          <form
-            className="form-add-question"
-            onSubmit={onSubmitFormCreateQuestion}
-            style={{ display: "flex", flexDirection: "column" }}
-          >
-            <h2 className="title-form-add-question">Добавить вопрос</h2>
-            <input
-              className="input-question"
-              value={valueTitle}
-              onChange={(e) => setValueTitle(e.target.value)}
-              placeholder="введите вопрос..."
-            />
-            <input
-              className="input-question"
-              value={valueAnswer}
-              onChange={(e) => setValueAnswer(e.target.value)}
+      <div className="container">
+        <div className="input-search-box">
+          <input
+              className="input-search"
+              ref={inputEl}
+              value={searchTerm}
+              onChange={getSearchTerm}
               type="text"
-              placeholder="введите ответ..."
-            />
-            <div className="box-question-btn">
-              <button className="question-btn" type="submit">
-                Добавить
-              </button>
-            </div>
-          </form>
-        )}
+              placeholder="введите вопрос..."
+          />
+          <div className="questions">
+            {
+              <div>[{questions.length}]</div>
+            }
+          </div>
+        </div>
+        <div className="output-questions">
+          <ListQuestions
+              questions={searchTerm.length < 1 ? questions : searchResult}
+          />
+        </div>
+        <div className="input-question-box">
+          {!closeForm ? (
+              <i
+                  className="fa-solid fa-plus open-form"
+                  onClick={() => setCloseForm(!closeForm)}
+              ></i>
+          ) : (
+              <i
+                  className="fa-solid fa-xmark open-form"
+                  onClick={() => setCloseForm(!closeForm)}
+              ></i>
+          )}
+          {closeForm && (
+              <form
+                  className="form-add-question"
+                  onSubmit={onSubmitFormCreateQuestion}
+                  style={{display: "flex", flexDirection: "column"}}
+              >
+                <h2 className="title-form-add-question">Добавить вопрос</h2>
+                <input
+                    type="text"
+                    className="input-question"
+                    value={valueTitle}
+                    onChange={(e) => setValueTitle(e.target.value)}
+                    placeholder="введите вопрос..."
+                />
+                <input
+                    type="text"
+                    className="input-question"
+                    value={valueAnswer}
+                    onChange={(e) => setValueAnswer(e.target.value)}
+                    placeholder="введите ответ..."
+                />
+                <div className="box-question-btn">
+                  <button className="question-btn" type="submit">
+                    Добавить
+                  </button>
+                </div>
+              </form>
+          )}
+        </div>
+        <AdminPanel
+            valueTitle={valueTitle}
+            valueAnswer={valueAnswer}
+            setValueTitle={setValueTitle}
+            setValueAnswer={setValueAnswer}
+            onSubmitFormCreateQuestion={onSubmitFormCreateQuestion}
+        />
       </div>
-      <AdminPanel
-        valueTitle={valueTitle}
-        valueAnswer={valueAnswer}
-        setValueTitle={setValueTitle}
-        setValueAnswer={setValueAnswer}
-        onSubmitFormCreateQuestion={onSubmitFormCreateQuestion}
-      />
-    </div>
   );
 };
 

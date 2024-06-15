@@ -25,9 +25,6 @@ const ListQuestions = ({ questions }) => {
             </div>
             <div className="question">{question.title}</div>
             <div className="answer">
-              <div className="answer-checked">
-                <i className="fa-regular fa-circle-check"></i>
-              </div>
               {question.answer}
             </div>
           </li>
