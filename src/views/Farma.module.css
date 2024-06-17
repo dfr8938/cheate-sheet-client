@@ -1,0 +1,24 @@
+.container {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: column;
+    padding: 20px;
+}
+
+.container i {
+    cursor: pointer;
+    font-size: 20px;
+    padding: 20px;
+}
+
+.container_box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container_box i{
+    cursor: pointer;
+    font-size: 20px;
+}

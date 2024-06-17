@@ -1,0 +1,144 @@
+.delete {
+    width: 100%;
+    height: 30px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.item {
+    cursor: pointer;
+    width: 300px;
+    border: 2px solid #eee;
+    border-radius: 5px;
+    margin: 10px;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+    transition: 0.5s ease all;
+}
+
+.item:hover {
+    border: 2px solid #00ccff;
+    transition: 0.5s ease all;
+}
+
+.delete, .edit {
+    width: 45px;
+}
+
+.delete i {
+    cursor: pointer;
+    font-size: 20px;
+    color: #eeeeee;
+    transition: .5 ease all;
+}
+
+.delete i:hover {
+    color: red;
+    transition: .5 ease all;
+}
+
+.edit i {
+    cursor: pointer;
+    font-size: 18px;
+    color: #eeeeee;
+    transition: .5 ease all;
+}
+
+.config {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.box_form {
+    width: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 10px;
+}
+
+.form {
+    cursor: pointer;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    border: 2px solid #eeeeee;
+    border-radius: 5px;
+    padding: 10px;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+    transition: .5s ease all;
+}
+
+.form:hover {
+    border: 2px solid #00ccff;
+    transition: .5s ease all;
+}
+
+.form h2 {
+    padding: 10px;
+}
+
+.form input {
+    text-indent: 10px;
+    width: 100%;
+    height: 30px;
+    margin: 5px;
+    border-radius: 5px;
+    border: 2px solid #eeeeee;
+    outline: none;
+    font-size: 14px;
+}
+
+.form textarea {
+    text-indent: 10px;
+    width: 100%;
+    height: 70px;
+    margin: 5px;
+    border-radius: 5px;
+    border: 2px solid #eeeeee;
+    outline: none;
+    font-size: 14px;
+}
+
+.form button {
+    cursor: pointer;
+    width: 100%;
+    height: 30px;
+    margin: 5px;
+    border-radius: 5px;
+    border: none;
+    outline: none;
+    font-size: 18px;
+    color: #ffffff;
+    background-color: #00ccff;
+    transition: .5s ease all;
+}
+
+.form button:hover {
+    background-color: #eeeeee;
+    transition: .5s ease all;
+}
+
+.header {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    width: 100%;
+    border-bottom: 2px solid #eeeeee;
+}
+
+.header i {
+    cursor: pointer;
+    color: #eeeeee;
+    padding: 0;
+    transition: .5s ease all;
+}
+
+.header i:hover {
+    color: #00ccff;
+    transition: .5s ease all;
+}

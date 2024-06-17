@@ -4,6 +4,7 @@ import ListQuestions from "./ListQuestions.jsx";
 
 import "./InputQuestion.css";
 import AdminPanel from "./AdminPanel.jsx";
+import SearchInput from "./SearchInput.jsx";
 
 const InputQuestion = () => {
   const [questions, setQuestions] = useState([]);
@@ -13,29 +14,37 @@ const InputQuestion = () => {
   const [valueAnswer, setValueAnswer] = useState("");
   const [closeForm, setCloseForm] = useState(false);
 
-  const getAllQuestions = async () => {
-    const { data } = await axios.get(`http://localhost:3001/api`);
-    setQuestions(data);
-  };
-
   const inputEl = useRef("");
+
+  const getAllQuestions = async () => {
+    try {
+      const { data } = await axios.get(`http://localhost:3001/api`);
+      setQuestions(data);
+    } catch (e) {
+      console.error(e.message);
+    }
+  };
 
   useEffect(() => {
     getAllQuestions();
   }, []);
 
   const searchHandler = (searchTerm) => {
-    setSearchTerm(searchTerm);
-    if (searchTerm !== "") {
-      const newQuestion = questions.filter((question) => {
-        return Object.values(question)
-          .join(" ")
-          .toLowerCase()
-          .includes(searchTerm.toLowerCase());
-      });
-      setSearchResult(newQuestion);
-    } else {
-      setSearchResult(questions);
+    try {
+      setSearchTerm(searchTerm);
+      if (searchTerm !== "") {
+        const newQuestion = questions.filter((question) => {
+          return Object.values(question)
+              .join(" ")
+              .toLowerCase()
+              .includes(searchTerm.toLowerCase());
+        });
+        setSearchResult(newQuestion);
+      } else {
+        setSearchResult(questions);
+      }
+    } catch (e) {
+      console.error(e.message);
     }
   };
 
@@ -44,11 +53,15 @@ const InputQuestion = () => {
   };
 
   const createQuestion = async (title, answer) => {
-    const { data } = await axios.post(`http://localhost:3001/api`, {
-      title,
-      answer,
-    });
-    return window.location.reload();
+    try {
+      const { data } = await axios.post(`http://localhost:3001/api`, {
+        title,
+        answer,
+      });
+      return window.location.reload();
+    } catch (e) {
+      console.error(e.message)
+    }
   };
 
   const onSubmitFormCreateQuestion = async (e) => {
@@ -58,21 +71,12 @@ const InputQuestion = () => {
 
   return (
       <div className="container">
-        <div className="input-search-box">
-          <input
-              className="input-search"
-              ref={inputEl}
-              value={searchTerm}
-              onChange={getSearchTerm}
-              type="text"
-              placeholder="введите вопрос..."
-          />
-          <div className="questions">
-            {
-              <div>[{questions.length}]</div>
-            }
-          </div>
-        </div>
+        <SearchInput
+            inputEl={inputEl}
+            searchTerm={searchTerm}
+            getSearchTerm={getSearchTerm}
+            questions={searchTerm.length < 1 ? questions : searchResult}
+        />
         <div className="output-questions">
           <ListQuestions
               questions={searchTerm.length < 1 ? questions : searchResult}

@@ -9,7 +9,6 @@ const AdminPanel = ({
   onSubmitFormCreateQuestion,
 }) => {
   const [isOpenWin, setIsOpenWin] = useState(false);
-  const [isClosed, setIsClosed] = useState(false);
 
   return (
     <>

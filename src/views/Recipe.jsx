@@ -1,8 +1,10 @@
 import {useEffect, useRef, useState} from "react";
 import axios from "axios";
 
-import "./Recipe.css";
+import styles from "./Recipe.module.css";
 import ListRecipe from "../components/ListRecipe.jsx";
+import SearchInput from "../components/SearchInput.jsx";
+import FormRecipeModule from "../components/FormRecipeModule.jsx";
 
 const Recipe = () => {
     const [recipe, setRecipe] = useState([]);
@@ -48,7 +50,7 @@ const Recipe = () => {
     const [searchTermRecipe, setSearchTermRecipe] = useState("");
     const [searchResultRecipe, setSearchResultRecipe] = useState([]);
 
-    const [hiddenRecipe, setHiddenRecipe] = useState(false);
+    const [clickClose, setClickClose] = useState(false);
 
     const inputElRecipe = useRef("");
 
@@ -72,94 +74,31 @@ const Recipe = () => {
     };
 
     return (
-        <div className="farma-container" style={{padding: "20px"}}>
-            <div className="input-search-box">
-                <input
-                    style={{
-                        width: "300px",
-                        height: "30px",
-                        borderRadius: "5px",
-                        textIndent: "10px",
-                        border: "2px solid #eee",
-                        outline: "none",
-                        margin: "20px",
-
-                    }}
-                    ref={inputElRecipe}
-                    value={searchTermRecipe}
-                    onChange={getSearchTermRecipe}
-                    type="text"
-                    placeholder="введите текст..."/>
-                <div className="questions">
-                    {
-                        <div>[{recipe.length}]</div>
-                    }
-                </div>
+        <div className={styles.container}>
+            <div className={styles.container_box}>
+                <SearchInput inputEl={inputElRecipe} searchTerm={searchTermRecipe}
+                             getSearchTerm={getSearchTermRecipe}
+                             questions={searchTermRecipe.length < 1 ? recipe : searchResultRecipe}/>
+                <i className="fa-solid fa-plus" onClick={() => setClickClose(!clickClose)}></i>
             </div>
-            <div className="questions">
-                <ListRecipe recipe={searchTermRecipe.length < 1 ? recipe : searchResultRecipe}/>
-            </div>
-            <div className="input-question-box">
-                {
-                    hiddenRecipe !== true ? (<form
-                        className="form-add-question"
-                        onSubmit={onSubmitFormCreateRecipe}
-                    >
-                        <div className="form-add-question-header">
-                            <i className="fa-solid fa-xmark" onClick={() => setHiddenRecipe(!hiddenRecipe)}></i>
-                        </div>
-                        <input
-                            className="input-question"
-                            type="text"
-                            value={valueTitleRecipe}
-                            onChange={(e) => setValueTitleRecipe(e.target.value)}
-                            placeholder="Title"
-                        />
-                        <textarea
-                            rows="14"
-                            cols="10"
-                            className="input-question-textarea"
-                            value={valueDescriptionRecipe}
-                            onChange={(e) => setValueDescriptionRecipe(e.target.value)}
-                            placeholder="Description"
-                        />
-                        <textarea
-                            rows="14"
-                            cols="10"
-                            className="input-question-textarea"
-                            value={valueFGRecipe}
-                            onChange={(e) => setValueFGRecipe(e.target.value)}
-                            placeholder="ФГ"
-                        />
-                        <textarea
-                            rows="14"
-                            cols="10"
-                            className="input-question-textarea"
-                            value={valueFDRecipe}
-                            onChange={(e) => setValueFDRecipe(e.target.value)}
-                            placeholder="ФД"
-                        />
-                        <textarea
-                            rows="14"
-                            cols="10"
-                            className="input-question-textarea"
-                            value={valuePPRecipe}
-                            onChange={(e) => setValuePPRecipe(e.target.value)}
-                            placeholder="ПП"
-                        />
-                        <textarea
-                            rows="14"
-                            cols="10"
-                            className="input-question-textarea"
-                            value={valuePDRecipe}
-                            onChange={(e) => setValuePDRecipe(e.target.value)}
-                            placeholder="ПД"
-                        />
-                        <button className="question-btn">Create</button>
-                    </form>) : <i className="fa-solid fa-plus" onClick={() => setHiddenRecipe(!hiddenRecipe)}></i>
-                }
-
-            </div>
+            <ListRecipe recipe={searchTermRecipe.length < 1 ? recipe : searchResultRecipe}/>
+            <FormRecipeModule
+                onSubmit={onSubmitFormCreateRecipe}
+                clickClose={clickClose}
+                setClickClose={setClickClose}
+                valueTitleRecipe={valueTitleRecipe}
+                valueDescriptionRecipe={valueDescriptionRecipe}
+                valueFGRecipe={valueFGRecipe}
+                valueFDRecipe={valueFDRecipe}
+                valuePPRecipe={valuePPRecipe}
+                valuePDRecipe={valuePDRecipe}
+                setValueTitleRecipe={setValueTitleRecipe}
+                setValueDescriptionRecipe={setValueDescriptionRecipe}
+                setValueFGRecipe={setValueFGRecipe}
+                setValueFDRecipe={setValueFDRecipe}
+                setValuePPRecipe={setValuePPRecipe}
+                setValuePDRecipe={setValuePDRecipe}
+            />
         </div>
     );
 };

@@ -1,13 +1,8 @@
 .list-questions {
-}
-
-.questions {
-  padding: 20px;
-  list-style-type: none;
+  width: 100%;
   display: flex;
   justify-content: center;
-  align-items: flex-start;
-  flex-wrap: wrap;
+  align-items: center;
 }
 
 .question-header {
@@ -36,6 +31,15 @@
 .questions-item:hover {
   border: 2px solid #00ccff;
   transition: 0.5s ease all;
+}
+
+.questions-list {
+  width: 100%;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
 }
 
 .question {

@@ -1,8 +1,11 @@
 import {useEffect, useRef, useState} from "react";
 import axios from "axios";
 
-import "./Farma.css";
 import ListQuestionsFarma from "../components/ListQuestionsFarma.jsx";
+import SearchInput from "../components/SearchInput.jsx";
+
+import styles from "./Farma.module.css";
+import FormFarmaModule from "../components/FormFarmaModule.jsx";
 
 const Farma = () => {
   const [questionsFarma, setQuestionsFarma] = useState([]);
@@ -16,8 +19,12 @@ const Farma = () => {
   const [valuePE, setValuePE] = useState("");
 
   const getAllQuestionsFarma = async () => {
-    const { data } = await axios.get(`http://localhost:3001/api/farma`);
-    setQuestionsFarma(data);
+      try {
+          const { data } = await axios.get(`http://localhost:3001/api/farma`);
+          setQuestionsFarma(data);
+      } catch (e) {
+          console.error(e.message);
+      }
   };
 
   useEffect(() => {
@@ -25,61 +32,49 @@ const Farma = () => {
   }, []);
 
   const createQuestionFarma = async (
-    title,
-    description,
-    pd,
-    lp,
-    md,
-    fe,
-    pp,
-    pe
+    title, description, pd,
+    lp, md, fe, pp, pe
   ) => {
-    const { data } = await axios.post(`http://localhost:3001/api/farma`, {
-      title,
-      description,
-      pd,
-      lp,
-      md,
-      fe,
-      pp,
-      pe,
-    });
-    return window.location.reload();
+      try {
+          const { data } = await axios.post(`http://localhost:3001/api/farma`, {
+              title, description, pd,
+              lp, md, fe, pp, pe,
+          });
+          return window.location.reload();
+      } catch (e) {
+          console.error(e.message);
+      }
   };
 
   const onSubmitFormCreateQuestionFarma = async (e) => {
     e.preventDefault();
     return createQuestionFarma(
-      valueTitleFarma,
-      valueDescriptionFarma,
-      valuePD,
-      valueLP,
-      valueMD,
-      valueFE,
-      valuePP,
-      valuePE
+      valueTitleFarma, valueDescriptionFarma,
+      valuePD, valueLP, valueMD, valueFE, valuePP, valuePE
     );
   };
 
   const [searchTermFarma, setSearchTermFarma] = useState("");
   const [searchResultFarma, setSearchResultFarma] = useState([]);
 
-  const [hidden, setHidden] = useState(false);
-
   const inputElFarma = useRef("");
 
     const searchHandlerFarma = (searchTermFarma) => {
-        setSearchTermFarma(searchTermFarma);
-        if (searchTermFarma !== "") {
-            const newQuestion = questionsFarma.filter((question) => {
-                return Object.values(question)
-                    .join(" ")
-                    .toLowerCase()
-                    .includes(searchTermFarma.toLowerCase());
-            });
-            setSearchResultFarma(newQuestion);
-        } else {
-            setSearchResultFarma(questionsFarma);
+        try {
+            setSearchTermFarma(searchTermFarma);
+            if (searchTermFarma !== "") {
+                const newQuestion = questionsFarma.filter((question) => {
+                    return Object.values(question)
+                        .join(" ")
+                        .toLowerCase()
+                        .includes(searchTermFarma.toLowerCase());
+                });
+                setSearchResultFarma(newQuestion);
+            } else {
+                setSearchResultFarma(questionsFarma);
+            }
+        } catch (e) {
+            console.log(e.message);
         }
     };
 
@@ -87,118 +82,43 @@ const Farma = () => {
         searchHandlerFarma(inputElFarma.current.value);
     };
 
+    const [ clickClose, setClickClose ] = useState(false);
+
   return (
-      <div className="farma-container" style={{padding: "20px"}}>
-          <div className="input-search-box">
-              <input
-                  style={{
-                      width: "300px",
-                      height: "30px",
-                      borderRadius: "5px",
-                      textIndent: "10px",
-                      border: "2px solid #eee",
-                      outline: "none",
-                      margin: "20px",
+      <div className={styles.container}>
+          <div className={styles.container_box}>
+              <SearchInput
+                  inputEl={inputElFarma}
+                  searchTerm={searchTermFarma}
+                  getSearchTerm={getSearchTermFarma}
+                  questions={searchTermFarma.length < 1 ? questionsFarma : searchResultFarma}
+              />
+              <i className="fa-solid fa-plus" onClick={() => setClickClose(!clickClose)}></i>
+          </div>
+          <ListQuestionsFarma
+              questionsFarma={searchTermFarma.length < 1 ? questionsFarma : searchResultFarma}/>
 
-                  }}
-                  ref={inputElFarma}
-                  value={searchTermFarma}
-                  onChange={getSearchTermFarma}
-                  type="text"
-                  placeholder="введите текст..."/>
-              <div className="questions">
-                  {
-                      <div>[{questionsFarma.length}]</div>
-                  }
-              </div>
-          </div>
-          <div className="questions">
-              <ListQuestionsFarma questionsFarma={searchTermFarma.length < 1 ? questionsFarma : searchResultFarma}/>
-          </div>
-          <div className="input-question-box">
-              {
-                  hidden !== true ? (<form
-                      className="form-add-question"
-                      onSubmit={onSubmitFormCreateQuestionFarma}
-                  >
-                      <div className="form-add-question-header">
-                          <i className="fa-solid fa-xmark" onClick={() => setHidden(!hidden)}></i>
-                      </div>
-                      <input
-                          className="input-question"
-                          type="text"
-                          value={valueTitleFarma}
-                          onChange={(e) => setValueTitleFarma(e.target.value)}
-                          placeholder="Заголовок"
-                      />
-                      <textarea
-                          rows="14"
-                          cols="10"
-                          className="input-question-textarea"
-                          type="text"
-                          value={valueDescriptionFarma}
-                          onChange={(e) => setValueDescriptionFarma(e.target.value)}
-                          placeholder="Описание"
-                      />
-                      <textarea
-                          rows="14"
-                          cols="10"
-                          className="input-question-textarea"
-                          type="text"
-                          value={valuePD}
-                          onChange={(e) => setValuePD(e.target.value)}
-                          placeholder="ПД"
-                      />
-                      <textarea
-                          rows="14"
-                          cols="10"
-                          className="input-question-textarea"
-                          type="text"
-                          value={valueLP}
-                          onChange={(e) => setValueLP(e.target.value)}
-                          placeholder="ЛП"
-                      />
-                      <textarea
-                          rows="14"
-                          cols="10"
-                          className="input-question-textarea"
-                          type="text"
-                          value={valueMD}
-                          onChange={(e) => setValueMD(e.target.value)}
-                          placeholder="МД"
-                      />
-                      <textarea
-                          rows="14"
-                          cols="10"
-                          className="input-question-textarea"
-                          type="text"
-                          value={valueFE}
-                          onChange={(e) => setValueFE(e.target.value)}
-                          placeholder="ФЕ"
-                      />
-                      <textarea
-                          rows="14"
-                          cols="10"
-                          className="input-question-textarea"
-                          type="text"
-                          value={valuePP}
-                          onChange={(e) => setValuePP(e.target.value)}
-                          placeholder="ПП"
-                      />
-                      <textarea
-                          rows="14"
-                          cols="10"
-                          className="input-question-textarea"
-                          type="text"
-                          value={valuePE}
-                          onChange={(e) => setValuePE(e.target.value)}
-                          placeholder="ПЕ"
-                      />
-                      <button className="question-btn">Create</button>
-                  </form>) : <i className="fa-solid fa-plus" onClick={() => setHidden(!hidden)}></i>
-              }
-
-          </div>
+          <FormFarmaModule
+              clickClose={clickClose}
+              setClickClose={setClickClose}
+              onSubmit={onSubmitFormCreateQuestionFarma}
+              valueTitleFarma={valueTitleFarma}
+              valueDescriptionFarma={valueDescriptionFarma}
+              valuePD={valuePD}
+              valueLP={valueLP}
+              valueMD={valueMD}
+              valueFE={valueFE}
+              valuePP={valuePP}
+              valuePE={valuePE}
+              setValueTitleFarma={setValueTitleFarma}
+              setValueDescriptionFarma={setValueDescriptionFarma}
+              setValuePD={setValuePD}
+              setValueLP={setValueLP}
+              setValueMD={setValueMD}
+              setValueFE={setValueFE}
+              setValuePP={setValuePP}
+              setValuePE={setValuePE}
+          />
       </div>
   );
 };
