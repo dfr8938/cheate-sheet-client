@@ -1,7 +1,6 @@
-import {NavLink, Route, Routes} from "react-router-dom";    
-import Micra from "../views/Micra.jsx";
-import Farma from "../views/Farma.jsx";
-import Recipe from "../views/Recipe.jsx";
+import {NavLink, Route, Routes} from "react-router-dom";
+import {Anat} from "../views/Anat/Anat.jsx";
+import {Pat} from "../views/Pat/Pat.jsx";
 
 import "./NavBar.css";
 
@@ -9,18 +8,15 @@ const NavBar = () => {
     return (
         <div className="navbar-container">
             <ul className="navbar-list">
-                <li className="navbar-list-item"><NavLink to="/micra">Микра</NavLink></li>
-                <li className="navbar-list-item"><NavLink to="/farma">Фарма</NavLink></li>
-                <li className="navbar-list-item"><NavLink to="/recipe">Recipe</NavLink></li>
+                <li className="navbar-list-item"><NavLink to="/anat">Анатомия</NavLink></li>
+                <li className="navbar-list-item"><NavLink to="/pat">Патология</NavLink></li>
             </ul>
             <Routes>
-                <Route path="/micra" element={<Micra />} />
-                <Route path="/farma" element={<Farma />} />
-                <Route path="/recipe" element={<Recipe />} />
-                <Route path="*" element={<Micra />} />
+                <Route path="/anat" element={<Anat />} />
+                <Route path="/pat" element={<Pat />} />
             </Routes>
         </div>
     );
 };
 
-export default NavBar;
+export {NavBar};

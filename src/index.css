@@ -7,3 +7,34 @@
 
   font-family: "Roboto", sans-serif;
 }
+
+.plus, .pen, .xmark {
+  cursor: pointer;
+  font-size: 20px;
+  transition: .5s ease all;
+  color: #eeeeee;
+}
+
+.plus:hover {
+  transition: .5s ease all;
+  color: #00ccff;
+  rotate: 90deg;
+}
+
+.pen {
+  font-size: 18px;
+}
+
+.pen, .xmark {
+  padding: 5px;
+}
+
+.pen:hover {
+  color: #adff2f;
+  transition: .5s ease all;
+}
+
+.xmark:hover {
+  color: #ff0000;
+  transition: .5s ease all;
+}
