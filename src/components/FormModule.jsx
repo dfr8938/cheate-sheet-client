@@ -1,12 +1,37 @@
 import styles from "./FormModule.module.css";
+import axios from "axios";
 
-const FormModule = ({onSubmit, valueTitle, valueDescription, setValueTitle,
-                              setValueDescription, clickClose, setClickClose}) => {
+const FormModule = ({
+                        questionsArray, setAllQuestionsArray,
+                        valueTitle, valueDescription,
+                        setValueTitle, setValueDescription,
+                        clickClose, setClickClose
+}) => {
+
+    const createQuestion = async (
+        title, description
+    ) => {
+        const { data } = await axios.post(`http://localhost:3001/api/pat`, {
+            title, description
+        });
+        const allQuestionsArray = questionsArray;
+        setAllQuestionsArray([{...data}, ...allQuestionsArray]);
+
+        setClickClose(!clickClose);
+
+        setValueTitle("");
+        setValueDescription("");
+    };
+
+    const onSubmitFormCreate = async (e) => {
+        e.preventDefault();
+        return createQuestion(valueTitle, valueDescription);
+    };
 
     return (
         <>
         {clickClose && <div className={styles.form_module}>
-            <form className={styles.form} onSubmit={onSubmit}>
+            <form className={styles.form} onSubmit={onSubmitFormCreate}>
                 <i className="fa-solid fa-xmark" onClick={() => setClickClose(!clickClose)}></i>
                 <h2>Добавить вопрос</h2>
                 <div className={styles.form_box_row}>
@@ -34,4 +59,4 @@ const FormModule = ({onSubmit, valueTitle, valueDescription, setValueTitle,
     );
 };
 
-export default FormModule;
+export {FormModule};

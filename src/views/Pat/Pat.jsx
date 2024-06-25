@@ -2,25 +2,25 @@ import styles from "./Pat.module.css";
 import SearchInput from "../../components/SearchInput.jsx";
 import {useEffect, useRef, useState} from "react";
 import axios from "axios";
-import {List} from "../../components/Pat/List.jsx";
-import {FormModule} from "../../components/Pat/FormModule.jsx";
+import {List} from "../../components/List.jsx";
+import {FormModule} from "../../components/FormModule.jsx";
 
 const Pat = () => {
 
-    const [patQuestions, setPatQuestions] = useState([]);
+    const [questions, setQuestions] = useState([]);
 
     const [valueTitle, setValueTitle] = useState("");
     const [valueDescription, setValueDescription] = useState("");
 
     const [clickClose, setClickClose] = useState(false);
 
-    const getAllPatQuestion = async () => {
+    const getAllQuestion = async () => {
         const { data } = await axios.get(`http://localhost:3001/api/pat`);
-        setPatQuestions(data);
+        setQuestions(data);
     };
 
     useEffect(() => {
-        getAllPatQuestion();
+        getAllQuestion();
     }, []);
 
     const [searchTerm, setSearchTerm] = useState("");
@@ -31,7 +31,7 @@ const Pat = () => {
     const searchHandler = (searchTerm) => {
         setSearchTerm(searchTerm);
         if (searchTerm !== "") {
-            const newQuestion = patQuestions.filter((question) => {
+            const newQuestion = questions.filter((question) => {
                 return Object.values(question)
                     .join(" ")
                     .toLowerCase()
@@ -39,7 +39,7 @@ const Pat = () => {
             });
             setSearchResult(newQuestion);
         } else {
-            setSearchResult(patQuestions);
+            setSearchResult(questions);
         }
     };
 
@@ -47,39 +47,22 @@ const Pat = () => {
         searchHandler(ref.current.value);
     };
 
-    const createQuestion = async (
-        title, description
-    ) => {
-        const { data } = await axios.post(`http://localhost:3001/api/pat`, {
-            title, description
-        });
-        const questions = patQuestions;
-        setPatQuestions([{...data}, ...questions]);
-
-        setClickClose(!clickClose);
-    };
-
-    const onSubmitFormCreate = async (e) => {
-        e.preventDefault();
-        return createQuestion( valueTitle, valueDescription
-        );
-    };
-
     return (
         <div className={styles.container}>
             <div className={styles.box}>
                 <SearchInput inputEl={ref} searchTerm={searchTerm}
                              getSearchTerm={getSearchTerm}
-                             questions={searchTerm.length < 1 ? patQuestions : searchResult}/>
+                             questions={searchTerm.length < 1 ? questions : searchResult}/>
                 <i className="fa-solid fa-plus plus" onClick={() => setClickClose(!clickClose)}></i>
             </div>
             <List
-                setPatQuestions={setPatQuestions}
-                patQuestions={patQuestions}
+                setQuestions={setQuestions}
+                allQuestionsArray={questions}
                 setClickClose={setClickClose}
-                questions={searchTerm.length < 1 ? patQuestions : searchResult}/>
+                questions={searchTerm.length < 1 ? questions : searchResult}/>
             <FormModule
-                onSubmit={onSubmitFormCreate}
+                questionsArray={questions}
+                setAllQuestionsArray={setQuestions}
                 clickClose={clickClose}
                 setClickClose={setClickClose}
                 valueTitle={valueTitle}

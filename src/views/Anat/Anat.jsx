@@ -2,25 +2,25 @@ import styles from "./Anat.module.css";
 import SearchInput from "../../components/SearchInput.jsx";
 import {useEffect, useRef, useState} from "react";
 import axios from "axios";
-import {List} from "../../components/Anat/List.jsx";
-import FormModule from "../../components/Anat/FormModule.jsx";
+import {List} from "../../components/List.jsx";
+import {FormModule} from "../../components/FormModule.jsx";
 
 const Anat = () => {
 
-    const [anatQuestions, setAnatQuestions] = useState([]);
+    const [questions, setQuestions] = useState([]);
 
     const [valueTitle, setValueTitle] = useState("");
     const [valueDescription, setValueDescription] = useState("");
 
     const [clickClose, setClickClose] = useState(false);
 
-    const getAllAnatQuestion = async () => {
+    const getAllQuestion = async () => {
         const { data } = await axios.get(`http://localhost:3001/api/anat`);
-        setAnatQuestions(data);
+        setQuestions(data);
     };
 
     useEffect(() => {
-        getAllAnatQuestion();
+        getAllQuestion();
     }, []);
 
     const [searchTerm, setSearchTerm] = useState("");
@@ -31,7 +31,7 @@ const Anat = () => {
     const searchHandler = (searchTerm) => {
         setSearchTerm(searchTerm);
         if (searchTerm !== "") {
-            const newQuestion = anatQuestions.filter((question) => {
+            const newQuestion = questions.filter((question) => {
                 return Object.values(question)
                     .join(" ")
                     .toLowerCase()
@@ -39,7 +39,7 @@ const Anat = () => {
             });
             setSearchResult(newQuestion);
         } else {
-            setSearchResult(anatQuestions);
+            setSearchResult(questions);
         }
     };
 
@@ -47,39 +47,22 @@ const Anat = () => {
         searchHandler(ref.current.value);
     };
 
-    const createQuestion = async (
-        title, description
-    ) => {
-        const { data } = await axios.post(`http://localhost:3001/api/anat`, {
-            title, description
-        });
-        const questions = anatQuestions;
-        setAnatQuestions([{...data}, ...questions]);
-
-        setClickClose(!clickClose);
-    };
-
-    const onSubmitFormCreate = async (e) => {
-        e.preventDefault();
-        return createQuestion( valueTitle, valueDescription
-        );
-    };
-
     return (
         <div className={styles.container}>
             <div className={styles.box}>
                 <SearchInput inputEl={ref} searchTerm={searchTerm}
                              getSearchTerm={getSearchTerm}
-                             questions={searchTerm.length < 1 ? anatQuestions : searchResult}/>
+                             questions={searchTerm.length < 1 ? questions : searchResult}/>
                 <i className="fa-solid fa-plus plus" onClick={() => setClickClose(!clickClose)}></i>
             </div>
             <List
-                setAnatQuestions={setAnatQuestions}
-                anatQuestions={anatQuestions}
+                setQuestions={setQuestions}
+                allQuestionsArray={questions}
                 setClickClose={setClickClose}
-                questions={searchTerm.length < 1 ? anatQuestions : searchResult}/>
+                questions={searchTerm.length < 1 ? questions : searchResult}/>
             <FormModule
-                onSubmit={onSubmitFormCreate}
+                questionsArray={questions}
+                setAllQuestionsArray={setQuestions}
                 clickClose={clickClose}
                 setClickClose={setClickClose}
                 valueTitle={valueTitle}

@@ -1,7 +1,7 @@
 import styles from "./List.module.css";
-import ItemList from "./ItemList.jsx";
+import {ItemList} from "./ItemList.jsx";
 
-const List = ({questions, anatQuestions, setAnatQuestions, setClickClose}) => {
+const List = ({questions, allQuestionsArray, setQuestions, setClickClose}) => {
     return (
         <ul className={styles.list}>
             {
@@ -10,8 +10,8 @@ const List = ({questions, anatQuestions, setAnatQuestions, setClickClose}) => {
                         key={index}
                         question={question}
                         index={index}
-                        questions={anatQuestions}
-                        setQuestions={setAnatQuestions}
+                        questions={allQuestionsArray}
+                        setQuestions={setQuestions}
                         setClickClose={setClickClose}
                     />
                 ))

@@ -12,6 +12,7 @@ const NavBar = () => {
                 <li className="navbar-list-item"><NavLink to="/pat">Патология</NavLink></li>
             </ul>
             <Routes>
+                <Route path="*" element={<Anat />} />
                 <Route path="/anat" element={<Anat />} />
                 <Route path="/pat" element={<Pat />} />
             </Routes>

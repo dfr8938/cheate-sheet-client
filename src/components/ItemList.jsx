@@ -5,17 +5,14 @@ import {Edit} from "./Edit.jsx";
 
 const ItemList = ({question, index, questions, setQuestions}) => {
 
-    let now = new Date();
-    const updateQuestion = question.updatedAt;
-
     const [upForm, setUpForm] = useState(false);
     const [warning, setWarning] = useState(false);
 
     const deleteQuestion = async (id) => {
         try {
-            const { data } = await axios.delete(`http://localhost:3001/api/pat/${id}`);
-            const patQuestions = questions.filter((item) => item.id !== id);
-            setQuestions([...patQuestions]);
+            const { data } = await axios.delete(`http://localhost:3001/api/anat/${id}`);
+            const anatQuestions = questions.filter((item) => item.id !== id);
+            setQuestions([...anatQuestions]);
         } catch (e) {
             console.error(e.message);
         }
@@ -25,9 +22,6 @@ const ItemList = ({question, index, questions, setQuestions}) => {
         <>
         <li className={styles.item}>
             <div className={styles.header}>
-                {
-                    updateQuestion
-                }
                 <i className="fa-solid fa-pen pen" onClick={() => setUpForm(!upForm)}
                 ></i>
                 <i className="fa-solid fa-xmark xmark"
